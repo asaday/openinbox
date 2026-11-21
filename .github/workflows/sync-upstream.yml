@@ -1,11 +1,8 @@
-# Updates a copy created by the Deploy to Cloudflare button to a newer version of the original
-# project. It only runs when you start it from the Actions tab: updates are never automatic, so a
-# bad upstream release can't reach your inbox without you choosing to install it. It copies the
-# upstream files into this repository, keeping your wrangler.jsonc names and database_id, and
-# pushes a commit; Cloudflare then redeploys and the Worker applies any new database migrations.
 name: Sync upstream
 
 on:
+  schedule:
+    - cron: '23 19 * * 0' # Monday 04:23 JST
   workflow_dispatch:
     inputs:
       ref:
@@ -31,7 +28,8 @@ jobs:
         with:
           node-version: 24
       - name: Copy upstream files
-        run: node scripts/sync-upstream.mjs "${{ inputs.ref }}"
+        # Upstream skips schedule events; explicitly opt in for this deployment.
+        run: GITHUB_EVENT_NAME=workflow_dispatch node scripts/sync-upstream.mjs "${{ inputs.ref }}"
       - name: Commit and push
         run: |
           if [ -z "$(git status --porcelain)" ]; then echo "Already up to date."; exit 0; fi
