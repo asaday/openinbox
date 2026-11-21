@@ -17,8 +17,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "openinbox",
-      "migrations_dir": "src/worker/db/migrations","database_id": "6b10efb5-6b8c-4a1e-b402-b2da3f2b93b9"
+      "database_name": "openinbox", "database_id": "6b10efb5-6b8c-4a1e-b402-b2da3f2b93b9",
+      "migrations_dir": "src/worker/db/migrations"
     }
   ],
   // There is deliberately no R2 binding: R2 on a new account needs a payment method, and an R2
